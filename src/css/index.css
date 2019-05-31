@@ -16,6 +16,7 @@ body
   font-family: 'Montserrat Alternates', sans-serif;
   
   transition: all 0.75s;
+  text-align: center;
   
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

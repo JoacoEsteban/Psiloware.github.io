@@ -71,6 +71,8 @@ function App() {
         onMouseDown={loopColors} 
         onMouseUp={stopLoop}
         onMouseLeave={stopLoop}
+
+        style={{color: bodyColor, background: titleColor}}
         >+</button>
       </div>
 
