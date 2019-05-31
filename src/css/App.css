@@ -1,0 +1,84 @@
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+
+
+
+.not-selectable
+{
+    -webkit-touch-callout: none; /*iOS Safari*/
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently supported by Chrome and Opera */
+}
+
+.title
+{
+    /* margin-top: 0.3em; */
+
+    font-size: 5vmax;
+    color: #555;
+    cursor: pointer;
+
+    transition: all 0.5s;
+
+}
+
+.title:hover
+{
+    font-size: 6vmax;
+}
+
+.red
+{
+    color: red;
+}
+
+
+.btnPlus
+{
+  outline: none;
+  display: inline-block;
+  padding: 0;
+
+  background: #fff;
+
+  text-decoration: none;
+
+  position: static;
+  right: 0;
+
+  width: 5.5vmax;
+  height: 5.5vmax;
+
+  border: 0px;
+  border-radius: 200px;
+
+  font-size: 4vmax;
+  font-family: "montserrat";
+
+  transition: all 0.5s;
+}
+
+.btnPlus:hover
+{
+  width: 1.5em;
+  height: 1.5em;
+
+  background: #1f1f1f;
+  font-size: 5vmax;
+  color: white;
+}
