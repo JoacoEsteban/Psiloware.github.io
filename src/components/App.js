@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import '../css/App.css';
 import {nineDigitColor} from '../scripts/nineDigitColor';
+import LoopIcon from '../svg-icons/loop'
 
 //----------------Variables and Data-----------------//
 //This global variable controls when the color cycling stops or keeps going
@@ -66,9 +67,11 @@ function App() {
     <div className="master-container">
 
       <span className="title not-selectable" style={{color: titleColor}}
-      onClick={setColors} 
+      onMouseDown={setColors} 
       onMouseEnter={setColors} 
       onMouseLeave={resetColors}
+
+      onTouchStart={setColors}  
       >Psiloware</span> 
 
       <div>
@@ -81,7 +84,7 @@ function App() {
         onTouchEnd={stopLoop}
 
         style={{color: bodyColor, background: titleColor}}
-        ><i class="fas fa-plus"></i></button>
+        ><LoopIcon color={bodyColor}/></button>
       </div>
 
     </div>
