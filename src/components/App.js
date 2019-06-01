@@ -73,23 +73,23 @@ function App() {
 
       onTouchStart={setColors}  
       >Psiloware</span> 
-        <div>
-          <div
-          style={{ border: 0, display:'inline-block', margin: 0, padding: 0, background: 'none', 
-          width:'3vmax',
-          }}
-          className="not-selectable"
-          
-          onMouseDown={loopColors} 
-          onMouseUp={stopLoop}
-          onMouseLeave={stopLoop}
-          
-          onTouchStart={loopColors} 
-          onTouchEnd={stopLoop}
-          >
-            <LoopIcon iconColor={titleColor} backColor={bodyColor} />
-          </div>
+
+      <div>
+        <div
+        style={{ border: 0, display:'inline-block', margin: 0, padding: 0, background: 'none',
+        }}
+        className="not-selectable loop-icon-container"
+        
+        onMouseDown={loopColors} 
+        onMouseUp={stopLoop}
+        onMouseLeave={stopLoop}
+        
+        onTouchStart={loopColors} 
+        onTouchEnd={stopLoop}
+        >
+          <LoopIcon iconColor={titleColor} backColor={bodyColor} />
         </div>
+      </div>
 
     </div>
   );
