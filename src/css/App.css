@@ -1,51 +1,62 @@
+
+body
+{
+  background-color: black;
+  color: white;
+  font-size: 1rem;
+  margin: 0;
+
+  font-family: 'Montserrat Alternates', sans-serif;
+  
+  transition: background .3s cubic-bezier(.44,.01,.23,.99);
+  text-align: center;
+  
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
 .App-link {
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-
-
-
 
 .not-selectable
 {
-    -webkit-touch-callout: none; /*iOS Safari*/
-    -webkit-user-select: none; /* Safari */
-    -khtml-user-select: none; /* Konqueror HTML */
-    -moz-user-select: none; /* Firefox */
-    -ms-user-select: none; /* Internet Explorer/Edge */
-    user-select: none; /* Non-prefixed version, currently supported by Chrome and Opera */
+  -webkit-touch-callout: none; /*iOS Safari*/
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently supported by Chrome and Opera */
 }
+
+
+
+
 
 .title
 {
-    /* margin-top: 0.3em; */
+  /* margin-top: 0.3em; */
+  display: inline-block;
+  font-size: 5vmax;
+  /* color: #555; */
+  cursor: pointer;
 
-    font-size: 5vmax;
-    color: #555;
-    cursor: pointer;
 
-    transition: all 0.5s;
+  transition:
+  all .7s cubic-bezier(.02,.51,.02,.99),
+  color .5s,
 
 }
 
 .title:hover
 {
-    font-size: 6vmax;
+  transform: scale(1.1);
 }
 
-.red
-{
-    color: red;
-}
+
+
 
 
 .btnPlus
@@ -53,6 +64,10 @@
   outline: none;
   display: inline-block;
   padding: 0;
+  
+  width: 3.5vmax;
+  height: 2.5vmax;
+  font-size: 2vmax;
 
   background: #fff;
 
@@ -61,24 +76,18 @@
   position: static;
   right: 0;
 
-  width: 5.5vmax;
-  height: 5.5vmax;
-
   border: 0px;
   border-radius: 200px;
 
-  font-size: 4vmax;
   font-family: "montserrat";
 
-  transition: all 0.5s;
+  transition:
+  all 0.3s cubic-bezier(.02,.51,.02,.99),
+  color .5s,
+  background .5s;
 }
 
 .btnPlus:hover
 {
-  width: 1.5em;
-  height: 1.5em;
-
-  background: #1f1f1f;
-  font-size: 5vmax;
-  color: white;
+  transform: scale(1.3);
 }

@@ -2,13 +2,18 @@ import React, {useState} from 'react';
 import '../css/App.css';
 import {nineDigitColor} from '../scripts/nineDigitColor';
 
+//----------------Variables and Data-----------------//
 //This global variable controls when the color cycling stops or keeps going
 var CONTINUELOOP = false;
 
+//sets default colors for (ƒ resetColors)
+const BODY_COLOR = '#111';
+const TITLE_COLOR = '#555';
+
 function App() {
   
-  const [ bodyColor, setBodyColor ] = useState("#000");
-  const [ titleColor, setTitleColor ] = useState("#fff");
+  const [ bodyColor, setBodyColor ] = useState(BODY_COLOR);
+  const [ titleColor, setTitleColor ] = useState(TITLE_COLOR);
   
   // when the state gets updated (aka new color is set), it rerenders again with the new color
   document.body.style.background = bodyColor;
@@ -26,8 +31,8 @@ function App() {
   
   function resetColors()
   {
-    setBodyColor('#000');
-    setTitleColor('#fff');
+    setBodyColor(BODY_COLOR);
+    setTitleColor(TITLE_COLOR);
   }
 
   function loopColors()
@@ -60,7 +65,7 @@ function App() {
   return (
     <div className="master-container">
 
-      <span id="psilowareTitle" className="title not-selectable" style={{color: titleColor}}
+      <span className="title not-selectable" style={{color: titleColor}}
       onClick={setColors} 
       onMouseEnter={setColors} 
       onMouseLeave={resetColors}
@@ -71,9 +76,12 @@ function App() {
         onMouseDown={loopColors} 
         onMouseUp={stopLoop}
         onMouseLeave={stopLoop}
+        
+        onTouchStart={loopColors} 
+        onTouchEnd={stopLoop}
 
         style={{color: bodyColor, background: titleColor}}
-        >+</button>
+        ><i class="fas fa-plus"></i></button>
       </div>
 
     </div>
