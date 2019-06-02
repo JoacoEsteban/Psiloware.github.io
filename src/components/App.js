@@ -66,18 +66,22 @@ function App() {
   return (
     <div className="master-container">
 
-      <span className="title not-selectable" style={{color: titleColor}}
-      onMouseDown={setColors} 
-      onMouseEnter={setColors} 
-      onMouseLeave={resetColors}
+      <span
+        className="not-selectable title" 
+        style={{color: titleColor}}
+        
+        onMouseDown={setColors} 
+        onMouseEnter={setColors} 
+        onMouseLeave={resetColors}
 
-      onTouchStart={setColors}  
-      >Psiloware</span> 
+        onTouchStart={setColors}  
+        onTouchEnd={resetColors}>
+          Psiloware
+      </span> 
 
       <div>
         <div
-        style={{ border: 0, display:'inline-block', margin: 0, padding: 0, background: 'none',
-        }}
+        style={{ border: 0, display:'inline-block', margin: 0, padding: 0, background: 'none',}}
         className="not-selectable loop-icon-container"
         
         onMouseDown={loopColors} 
