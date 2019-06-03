@@ -82,6 +82,28 @@ body
 
 }
 
+/* --------------------Color View-------------------- */
+
+.color-view
+{
+    width: 5vmax;
+    height: 2vmax;
+    border-radius: 100vmax;
+    border: 2px solid;
+    margin: 1vmax;
+    /* TODO Fix not aligning at center */
+    display: inline-block;
+}
+.color-view div
+{
+    width: 3vmax;
+    height: .5vmax;
+    border-radius: 2vmax;
+    margin: auto;
+}
+
+
+
 
 /* ----------------- QUERIES ----------------- */
 
@@ -91,17 +113,24 @@ body
     height: 100%;
     display: grid;
   }
-  div
-  { 
+  div{ 
     margin: auto;
   }
-  
-  .title
-  {
+  .title{
     font-size: 10vmax;
   }
-  .loop-icon-container
-  {
+  .loop-icon-container{
     width:10vmax;
+  }
+
+  .color-view{
+    width: 7.5vmax;
+    height: 3vmax;
+  }
+  .color-view div{
+    width: 4.5vmax;
+    height:.75vmax;
+    border-radius: 2vmax;
+    margin: auto;
   }
 }

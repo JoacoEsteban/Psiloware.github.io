@@ -1,5 +1,5 @@
 import React from 'react'
-import '../css/ColorList.css'
+import '../css/App.css'
 import {nineDigitColor} from '../scripts/nineDigitColor';
 
 const ColorView = ({color}) =>
