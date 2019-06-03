@@ -1,15 +1,24 @@
 import React, {useState} from 'react';
-import '../css/App.css';
+
+import ColorList from './ColorList'
 import {nineDigitColor} from '../scripts/nineDigitColor';
+
+import '../css/App.css';
 import LoopIcon from '../svg-icons/loop'
+import Tick from '../svg-icons/tick'
+
+
 
 //----------------Variables and Data-----------------//
 //This global variable controls when the color cycling stops or keeps going
-var CONTINUELOOP = false;
+var CONTINUE_LOOP = false;
+var IS_KEPT = false;
 
 //sets default colors for (ƒ resetColors)
 const BODY_COLOR = '#111';
 const TITLE_COLOR = '#555';
+
+var NEW_COLOR = BODY_COLOR;
 
 function App() {
   
@@ -25,26 +34,32 @@ function App() {
   //sets both the title and body colors
   function setColors()
   {
-    var newColor = nineDigitColor.newColorRGB('new');
-    setBodyColor(nineDigitColor.newColorRGBString(newColor));
-    setTitleColor(nineDigitColor.newColorRGBString(nineDigitColor.invertColor(newColor)));
+    if(IS_KEPT){IS_KEPT=false;}
+    NEW_COLOR = nineDigitColor.newColorRGB('new');
+    setBodyColor(nineDigitColor.newColorRGBString(NEW_COLOR));
+    setTitleColor(nineDigitColor.newColorRGBString(nineDigitColor.invertColor(NEW_COLOR)));
   }
   
   function resetColors()
   {
-    setBodyColor(BODY_COLOR);
-    setTitleColor(TITLE_COLOR);
+    if(!IS_KEPT)
+    {
+      // NEW_COLOR=nineDigitColor.newColorRGB();
+      setBodyColor(BODY_COLOR);
+      setTitleColor(TITLE_COLOR);
+
+    }
   }
 
   function loopColors()
   {
     //Sets the variable to true so it keeps the interval going
-    CONTINUELOOP = true;
+    CONTINUE_LOOP = true;
     setColors();
     
     var colorInterval = setInterval(() => 
     {
-      if(CONTINUELOOP)
+      if(CONTINUE_LOOP)
       {
         setColors();
       }else //clears the interval from the inside
@@ -55,9 +70,9 @@ function App() {
 
   function stopLoop()
   {
-    CONTINUELOOP = false; resetColors();
+    CONTINUE_LOOP = false; resetColors();
   }
-  
+
 
 
 //----------------Component-----------------//
@@ -67,10 +82,10 @@ function App() {
     <div className="master-container">
 
       <span
-        className="not-selectable title" 
+        className="not-selectable title hover-transform" 
         style={{color: titleColor}}
         
-        onMouseDown={setColors} 
+        onMouseDown={()=> IS_KEPT = true} 
         onMouseEnter={setColors} 
         onMouseLeave={resetColors}
 
@@ -82,7 +97,7 @@ function App() {
       <div>
         <div
         style={{ border: 0, display:'inline-block', margin: 0, padding: 0, background: 'none',}}
-        className="not-selectable loop-icon-container"
+        className="not-selectable loop-icon-container hover-transform"
         
         onMouseDown={loopColors} 
         onMouseUp={stopLoop}
@@ -91,9 +106,11 @@ function App() {
         onTouchStart={loopColors} 
         onTouchEnd={stopLoop}
         >
-          <LoopIcon iconColor={titleColor} backColor={bodyColor} />
+          <LoopIcon iconColor={titleColor} />
         </div>
       </div>
+
+        <ColorList color={NEW_COLOR}/>
 
     </div>
   );

@@ -1,0 +1,24 @@
+.color-view
+{
+    width: 5vmax;
+    height: 2vmax;
+    border-radius: 100vmax;
+    border: 2px solid;
+
+    /* TODO Fix not aligning at center */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.color-view div
+{
+    width: 3vmax;
+    height: .5vmax;
+    border-radius: 2vmax;
+    display: inline-block;
+}
+
+.color-view:hover
+{
+    transform: scale(1.5)
+}
