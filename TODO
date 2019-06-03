@@ -1,5 +1,5 @@
 {Todo}
-TODO Save colors as presets, then to localStorage
+TODO Integrate ColorList with localStorage and build Save button functionality
 TODO change rgb(255, 255, 255) to #fff
 
 {extras}
