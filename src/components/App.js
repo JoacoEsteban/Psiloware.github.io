@@ -41,6 +41,7 @@ function App()
   
   const [ bodyColor, setBodyColor ] = useState(BODY_COLOR);
   const [ titleColor, setTitleColor ] = useState(TITLE_COLOR);
+  const [ colorArray, setColorArray ] = useState(listaDeColores);
   
   // when the state gets updated (aka new color is set), it rerenders again with the new color
   document.body.style.background = bodyColor;
@@ -57,7 +58,7 @@ function App()
                      <span 
                     style={{display:'contents'}} key={i} 
                     
-                    onMouseOver={()=> setColors(color)}
+                    onMouseEnter={()=> setColors(color)}
                     onMouseLeave={resetColors}
                     onClick={() => IS_KEPT = true}
                     
@@ -119,14 +120,14 @@ function App()
       {
         setColors();
       }else //clears the interval from the inside
-      { clearInterval(colorInterval); resetColors(); }
+      { clearInterval(colorInterval);}
 
     }, 270);
   }
 
   function stopLoop()
   {
-    CONTINUE_LOOP = false; resetColors();
+    CONTINUE_LOOP = false;
   }
 
 
@@ -173,7 +174,7 @@ function App()
 
       </div>
 
-        <ColorList colorList={listaDeColores}/>
+        <ColorList colorList={colorArray}/>
 
     </div>
   );
