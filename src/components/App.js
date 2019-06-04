@@ -54,7 +54,20 @@ function App()
               {colorList.map( (color, i) =>
               {
                   return (
-                     <span key={i} onClick={()=> setColors(color)}> < ColorView color={color}  /> </span>
+                     <span 
+                    style={{display:'contents'}} key={i} 
+                    
+                    onMouseOver={()=> setColors(color)}
+                    onMouseLeave={resetColors}
+                    onClick={() => IS_KEPT = true}
+                    
+                    onTouchStart={()=> setColors(color)}
+                    > 
+
+
+                      < ColorView color={color}  />
+
+                     </span>
                   )
               })}
           </div>
@@ -64,7 +77,7 @@ function App()
   //sets both the title and body colors
   function setColors(color)
   {
-    if(IS_KEPT){IS_KEPT=false;}
+    IS_KEPT=false;
 
     console.log(color);
     
@@ -88,7 +101,6 @@ function App()
   {
     if(!IS_KEPT)
     {
-      // NEW_COLOR=nineDigitColor.newColorRGB();
       setBodyColor(BODY_COLOR);
       setTitleColor(TITLE_COLOR);
 
