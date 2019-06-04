@@ -14,6 +14,8 @@ import SaveIcon from '../svg-icons/save'
 var CONTINUE_LOOP = false;
 //Toggles color so it wont reset back to default
 var IS_KEPT = false;
+//Stores the current color of the body in NUMBER format **NOT STRING**
+var CURRENT_COLOR;
 
 //sets default colors for (ƒ resetColors)
 const BODY_COLOR = '#111';
@@ -78,32 +80,43 @@ function App()
   //sets both the title and body colors
   function setColors(color)
   {
-    IS_KEPT=false;
 
-    console.log(color);
+    if(IS_KEPT)
+    {
+      //Forces resetColor execution when hovering out
+      IS_KEPT=false;
+      //Clears previous color var
+      CURRENT_COLOR = null;
+    }
+
     
     if(color)
     {
-
+      //sets the color passed form parameters
       setBodyColor(nineDigitColor.newColorRGBString(color));
       setTitleColor(nineDigitColor.newColorRGBString(nineDigitColor.invertColor(color)));
       
     }else
     {
-      var newColor = nineDigitColor.newColorRGB('new');
-      setBodyColor(nineDigitColor.newColorRGBString(newColor));
-      setTitleColor(nineDigitColor.newColorRGBString(nineDigitColor.invertColor(newColor)));
+      //sets new color
+      CURRENT_COLOR = nineDigitColor.newColorRGB();
+      setBodyColor(nineDigitColor.newColorRGBString(CURRENT_COLOR));
+      setTitleColor(nineDigitColor.newColorRGBString(nineDigitColor.invertColor(CURRENT_COLOR)));
     }
 
     
   }
   
+
   function resetColors()
   {
+    //executes only if the color is not being kept
     if(!IS_KEPT)
     {
       setBodyColor(BODY_COLOR);
       setTitleColor(TITLE_COLOR);
+
+      CURRENT_COLOR = null;
 
     }
   }
@@ -130,6 +143,20 @@ function App()
     CONTINUE_LOOP = false;
   }
 
+
+  function addColor()
+  {
+    if(CURRENT_COLOR)
+    {
+      //Copies the state into a new var in order to use the push function
+      var lista = colorArray.map(element => element );;
+      
+      lista.push( CURRENT_COLOR );
+      
+      //then sets the state
+      setColorArray(lista);
+    }
+  }
 
 
 //----------------Component-----------------//
@@ -168,7 +195,7 @@ function App()
         <div 
         className="not-selectable loop-icon-container hover-transform"
         >
-          <SaveIcon iconColor={titleColor} />
+          <SaveIcon iconColor={titleColor} onClick={addColor}/>
         </div>
 
 

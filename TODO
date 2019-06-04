@@ -1,5 +1,7 @@
 {Todo}
-TODO Integrate ColorList with localStorage and build Save button functionality
+TODO Fix Mobile touch events for Title and Save Button
+TODO Integrate ColorList with localStorage
+TODO Add Remove Button
 
 {extras}
 TODO Dinamyc Favicon based on newcolors
