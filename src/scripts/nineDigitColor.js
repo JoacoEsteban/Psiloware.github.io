@@ -21,7 +21,28 @@ var nineDigitColor =
             colorRGB = nineDigitColor.newColorRGB();
         }
 
-        return "rgb(" + colorRGB[0].toString() + ", " + colorRGB[1].toString() + ", " + colorRGB[2].toString() + ")";
+        //Converts numbers into hex formatted strings
+        var toHex = [];
+        for(let i = 0; i<3; i++)
+        {
+            toHex[i]=colorRGB[i].toString(16);
+            
+            //if the number is 1 digit it adds a 0 upfront
+            if(toHex[i].length === 1)
+            {
+                let fixed = '0' + toHex[i][0]
+                
+                toHex[i] = fixed;
+            }
+        }
+
+        colorRGB = toHex;
+        
+        
+
+
+
+        return "#" + colorRGB[0].toString(16) + colorRGB[1].toString(16) + colorRGB[2].toString(16);
 
     },
 
@@ -36,5 +57,6 @@ var nineDigitColor =
         return [255 - colorRGB[0], 255 - colorRGB[1], 255 - colorRGB[2]];
     }
 }
+
 
 export { nineDigitColor };

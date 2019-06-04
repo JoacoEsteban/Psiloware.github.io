@@ -66,19 +66,16 @@ function App()
   {
     if(IS_KEPT){IS_KEPT=false;}
 
-    if(color === null){color=null};
+    console.log(color);
     
     if(color)
     {
-      console.log('hola',color);
 
       setBodyColor(nineDigitColor.newColorRGBString(color));
       setTitleColor(nineDigitColor.newColorRGBString(nineDigitColor.invertColor(color)));
       
-    }else{
-
-      
-      
+    }else
+    {
       var newColor = nineDigitColor.newColorRGB('new');
       setBodyColor(nineDigitColor.newColorRGBString(newColor));
       setTitleColor(nineDigitColor.newColorRGBString(nineDigitColor.invertColor(newColor)));
