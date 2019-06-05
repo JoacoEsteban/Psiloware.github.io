@@ -7,6 +7,7 @@ import '../css/App.css';
 import LoopIcon from '../svg-icons/loop'
 import SaveIcon from '../svg-icons/save'
 import DeleteIcon from '../svg-icons/delete'
+import AddIcon from '../svg-icons/add'
 
 
 
@@ -26,27 +27,15 @@ const TITLE_COLOR = '#555';
 
 
 
-
-const listaDeColores = [
-  nineDigitColor.newColorRGB(), 
-  nineDigitColor.newColorRGB(), 
-  nineDigitColor.newColorRGB(), 
-  nineDigitColor.newColorRGB(), 
-  nineDigitColor.newColorRGB(), 
-  nineDigitColor.newColorRGB(), 
-  nineDigitColor.newColorRGB(), 
-];
-
-
-
-
+//Loads colorlist from LocalStorage
+const colorListFromLocalStorage = JSON.parse(localStorage.getItem("ColorList")) === null ? []: JSON.parse(localStorage.getItem("ColorList"));
 
 function App() 
 {
   
   const [ bodyColor, setBodyColor ] = useState(BODY_COLOR);
   const [ titleColor, setTitleColor ] = useState(TITLE_COLOR);
-  const [ colorArray, setColorArray ] = useState(listaDeColores);
+  const [ colorArray, setColorArray ] = useState(colorListFromLocalStorage);
   
   // when the state gets updated (aka new color is set), it rerenders again with the new color
   document.body.style.background = bodyColor;
@@ -190,6 +179,20 @@ function App()
   }
 
 
+
+
+
+
+function saveToLocalStorage()
+{
+  localStorage.setItem("ColorList", JSON.stringify(colorArray));
+}
+
+
+
+
+
+
 //----------------Component-----------------//
 
 
@@ -226,13 +229,20 @@ function App()
         <div 
         className="not-selectable icon-container hover-transform"
         >
-          <SaveIcon iconColor={titleColor} onClick={addColor}/>
+          <AddIcon iconColor={titleColor} onClick={addColor}/>
         </div>
+
 
         <div 
         className="not-selectable icon-container hover-transform"
         >
           <DeleteIcon iconColor={titleColor} onClick={deleteColor}/>
+        </div>
+
+        <div 
+        className="not-selectable icon-container hover-transform"
+        >
+          <SaveIcon iconColor={titleColor} onClick={saveToLocalStorage}/>
         </div>
 
 
