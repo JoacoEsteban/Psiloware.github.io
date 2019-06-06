@@ -14,7 +14,7 @@ import AddIcon from '../svg-icons/add'
 //----------------Variables and Data-----------------//
 var CONTINUE_LOOP = false; //This global variable controls if the color cycling or keeps going or stops
 var IS_KEPT = false; //TRUE == maintains the colors | FALSE == the colors can be set back to default
-var CURRENT_COLOR; //Stores the current color of the body in ARRAY OF NUMBERS format **NOT STRING**
+var CURRENT_COLOR = JSON.parse(localStorage.getItem("CurrentColor")); //Stores the current color of the body in ARRAY OF NUMBERS format **NOT STRING**
 var COLOR_INDEX = -1; //Keeps the current color index position in the colorArray **for ƒ(deleteColor)**
 
 var IS_DELETABLE = false; //Controls wether the CURRENT_COLOR is deletable or not. Depends on if it's already inside the colorArray
@@ -33,8 +33,9 @@ const colorListFromLocalStorage = JSON.parse(localStorage.getItem("ColorList")) 
 function App() 
 {
   
-  const [ bodyColor, setBodyColor ] = useState(BODY_COLOR);
-  const [ titleColor, setTitleColor ] = useState(TITLE_COLOR);
+  //If CURRENT_COLOR was saved in a previous session it restores it to the page
+  const [ bodyColor, setBodyColor ] = useState(CURRENT_COLOR ? nineDigitColor.newColorRGBString(CURRENT_COLOR) : BODY_COLOR);
+  const [ titleColor, setTitleColor ] = useState(CURRENT_COLOR ? nineDigitColor.newColorRGBString(nineDigitColor.invertColor(CURRENT_COLOR)) : TITLE_COLOR);
   const [ colorArray, setColorArray ] = useState(colorListFromLocalStorage);
   
   // when the state gets updated (aka new color is set), it rerenders again with the new color
@@ -52,11 +53,11 @@ function App()
                      <span 
                     style={{display:'contents'}} key={i} 
                     
-                    onMouseEnter={()=> setColors(i)}
+                    onMouseEnter={()=> setColorsHandler(i)}
                     onMouseLeave={resetColors}
                     onClick={() => IS_KEPT = true}
                     
-                    onTouchStart={()=> setColors(color)}
+                    onTouchStart={()=> setColorsHandler(color)}
                     > 
 
 
@@ -68,15 +69,33 @@ function App()
           </div>
       )
   }
+
+  function setColors(color, mode)
+  {
+    switch(mode)
+    {
+      case 1:
+        setBodyColor(nineDigitColor.newColorRGBString(color));
+        break;
+
+      case 2:
+        setTitleColor(nineDigitColor.newColorRGBString(color));
+        break;
+
+      default:
+        setBodyColor(nineDigitColor.newColorRGBString(color));
+        setTitleColor(nineDigitColor.newColorRGBString(nineDigitColor.invertColor(color)));
+        break;
+    }
+  }
   
   //sets both the title and body colors
-  function setColors(index)
+  function setColorsHandler(index)
   {
     if(index >= 0 ) //Sets an already existent color inside the array
     {
       //sets the color passed form parameters
-      setBodyColor(nineDigitColor.newColorRGBString(colorArray[index]));
-      setTitleColor(nineDigitColor.newColorRGBString(nineDigitColor.invertColor(colorArray[index])));
+      setColors(colorArray[index]);
       
       CURRENT_COLOR = colorArray[index];
       COLOR_INDEX = index;
@@ -88,9 +107,8 @@ function App()
     {
       //sets new color
       CURRENT_COLOR = nineDigitColor.newColorRGB();
-      setBodyColor(nineDigitColor.newColorRGBString(CURRENT_COLOR));
-      setTitleColor(nineDigitColor.newColorRGBString(nineDigitColor.invertColor(CURRENT_COLOR)));
-      
+      setColors(CURRENT_COLOR);
+
       //Forces resetColor execution when hovering out
       IS_KEPT=false;
 
@@ -123,13 +141,13 @@ function App()
   {
     //Sets the variable to true so it keeps the interval going
     CONTINUE_LOOP = true;
-    setColors();
+    setColorsHandler();
     
     var colorInterval = setInterval(() => 
     {
       if(CONTINUE_LOOP)
       {
-        setColors();
+        setColorsHandler();
       }else //clears the interval from the inside
       { clearInterval(colorInterval);}
 
@@ -186,6 +204,7 @@ function App()
 function saveToLocalStorage()
 {
   localStorage.setItem("ColorList", JSON.stringify(colorArray));
+  localStorage.setItem("CurrentColor", JSON.stringify(CURRENT_COLOR));
 }
 
 
@@ -204,10 +223,10 @@ function saveToLocalStorage()
         style={{color: titleColor}}
         
         onMouseDown={()=> IS_KEPT = true} 
-        onMouseEnter={()=>setColors(-1)}
+        onMouseEnter={()=>setColorsHandler(-1)}
         onMouseLeave={resetColors}
 
-        onTouchStart={()=>setColors(-1)}  
+        onTouchStart={()=>setColorsHandler(-1)}  
         onTouchEnd={resetColors}>
           Psiloware
       </span> 
