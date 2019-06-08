@@ -149,7 +149,7 @@ function App()
     if(CURRENT_COLOR)
     {
       //Copies the state into a new var in order to use the push function
-      var lista = colorArray.map(element => element );;
+      var lista = colorArray.map(element => element );
       
       lista.push( CURRENT_COLOR );
       
@@ -173,8 +173,13 @@ function App()
         onMouseEnter={()=>setColors(null)}
         onMouseLeave={resetColors}
 
-        onTouchStart={()=>setColors(null)}  
-        onTouchEnd={resetColors}>
+        onTouchStart={()=>{
+          // IS_KEPT = true
+          setColors(null);
+          }
+        }  
+        // onTouchEnd={resetColors}
+        >
           Psiloware
       </span> 
 
