@@ -54,7 +54,7 @@ body
 
 
 
-.loop-icon-container
+.icon-container
 {
   width: 4.2vmax;
   height: 4.2vmax;
@@ -121,7 +121,7 @@ body
   .title{
     font-size: 10vmax;
   }
-  .loop-icon-container{
+  .icon-container{
     width:10vmax;
   }
 

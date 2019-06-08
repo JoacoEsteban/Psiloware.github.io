@@ -6,44 +6,37 @@ import {nineDigitColor} from '../scripts/nineDigitColor';
 import '../css/App.css';
 import LoopIcon from '../svg-icons/loop'
 import SaveIcon from '../svg-icons/save'
+import DeleteIcon from '../svg-icons/delete'
+import AddIcon from '../svg-icons/add'
 
 
 
 //----------------Variables and Data-----------------//
-//This global variable controls when the color cycling stops or keeps going
-var CONTINUE_LOOP = false;
-//Toggles color so it wont reset back to default
-var IS_KEPT = false;
-//Stores the current color of the body in NUMBER format **NOT STRING**
-var CURRENT_COLOR;
+var CONTINUE_LOOP = false; //This global variable controls if the color cycling or keeps going or stops
+var IS_KEPT = false; //TRUE == maintains the colors | FALSE == the colors can be set back to default
+var CURRENT_COLOR = JSON.parse(localStorage.getItem("CurrentColor")); //Stores the current color of the body in ARRAY OF NUMBERS format **NOT STRING**
+var COLOR_INDEX = -1; //Keeps the current color index position in the colorArray **for ƒ(deleteColor)**
 
-//sets default colors for (ƒ resetColors)
+var IS_DELETABLE = false; //Controls wether the CURRENT_COLOR is deletable or not. Depends on if it's already inside the colorArray
+var IS_ADDABLE = false; //Controls wether the CURRENT_COLOR is Addable to the colorArray or not. Depends on if it's already inside the colorArray
+
+
+//sets default colors for ƒ(resetColors)
 const BODY_COLOR = '#111';
 const TITLE_COLOR = '#555';
 
 
 
-
-const listaDeColores = [
-  nineDigitColor.newColorRGB(), 
-  nineDigitColor.newColorRGB(), 
-  nineDigitColor.newColorRGB(), 
-  nineDigitColor.newColorRGB(), 
-  nineDigitColor.newColorRGB(), 
-  nineDigitColor.newColorRGB(), 
-  nineDigitColor.newColorRGB(), 
-];
-
-
-
-
+//Loads colorlist from LocalStorage
+const colorListFromLocalStorage = JSON.parse(localStorage.getItem("ColorList")) === null ? []: JSON.parse(localStorage.getItem("ColorList"));
 
 function App() 
 {
   
-  const [ bodyColor, setBodyColor ] = useState(BODY_COLOR);
-  const [ titleColor, setTitleColor ] = useState(TITLE_COLOR);
-  const [ colorArray, setColorArray ] = useState(listaDeColores);
+  //If CURRENT_COLOR was saved in a previous session it restores it to the page
+  const [ bodyColor, setBodyColor ] = useState(CURRENT_COLOR ? nineDigitColor.newColorRGBString(CURRENT_COLOR) : BODY_COLOR);
+  const [ titleColor, setTitleColor ] = useState(CURRENT_COLOR ? nineDigitColor.newColorRGBString(nineDigitColor.invertColor(CURRENT_COLOR)) : TITLE_COLOR);
+  const [ colorArray, setColorArray ] = useState(colorListFromLocalStorage);
   
   // when the state gets updated (aka new color is set), it rerenders again with the new color
   document.body.style.background = bodyColor;
@@ -60,11 +53,11 @@ function App()
                      <span 
                     style={{display:'contents'}} key={i} 
                     
-                    onMouseEnter={()=> setColors(color)}
+                    onMouseEnter={()=> setColorsHandler(i)}
                     onMouseLeave={resetColors}
                     onClick={() => IS_KEPT = true}
                     
-                    onTouchStart={()=> setColors(color)}
+                    onTouchStart={()=> setColorsHandler(color)}
                     > 
 
 
@@ -76,32 +69,51 @@ function App()
           </div>
       )
   }
+
+  function setColors(color, mode)
+  {
+    switch(mode)
+    {
+      case 1:
+        setBodyColor(nineDigitColor.newColorRGBString(color));
+        break;
+
+      case 2:
+        setTitleColor(nineDigitColor.newColorRGBString(color));
+        break;
+
+      default:
+        setBodyColor(nineDigitColor.newColorRGBString(color));
+        setTitleColor(nineDigitColor.newColorRGBString(nineDigitColor.invertColor(color)));
+        break;
+    }
+  }
   
   //sets both the title and body colors
-  function setColors(color)
+  function setColorsHandler(index)
   {
-
-    if(IS_KEPT)
-    {
-      //Forces resetColor execution when hovering out
-      IS_KEPT=false;
-      //Clears previous color var
-      CURRENT_COLOR = null;
-    }
-
-    
-    if(color)
+    if(index >= 0 ) //Sets an already existent color inside the array
     {
       //sets the color passed form parameters
-      setBodyColor(nineDigitColor.newColorRGBString(color));
-      setTitleColor(nineDigitColor.newColorRGBString(nineDigitColor.invertColor(color)));
+      setColors(colorArray[index]);
+      
+      CURRENT_COLOR = colorArray[index];
+      COLOR_INDEX = index;
+
+      IS_ADDABLE = false;
+      IS_DELETABLE = true;
       
     }else
     {
       //sets new color
       CURRENT_COLOR = nineDigitColor.newColorRGB();
-      setBodyColor(nineDigitColor.newColorRGBString(CURRENT_COLOR));
-      setTitleColor(nineDigitColor.newColorRGBString(nineDigitColor.invertColor(CURRENT_COLOR)));
+      setColors(CURRENT_COLOR);
+
+      //Forces resetColor execution when hovering out
+      IS_KEPT=false;
+
+      IS_ADDABLE = true;
+      IS_DELETABLE = false;
     }
 
     
@@ -117,6 +129,10 @@ function App()
       setTitleColor(TITLE_COLOR);
 
       CURRENT_COLOR = null;
+      COLOR_INDEX = -1;
+
+      IS_ADDABLE = false;
+      IS_DELETABLE = false;
 
     }
   }
@@ -125,13 +141,13 @@ function App()
   {
     //Sets the variable to true so it keeps the interval going
     CONTINUE_LOOP = true;
-    setColors();
+    setColorsHandler();
     
     var colorInterval = setInterval(() => 
     {
       if(CONTINUE_LOOP)
       {
-        setColors();
+        setColorsHandler();
       }else //clears the interval from the inside
       { clearInterval(colorInterval);}
 
@@ -146,17 +162,54 @@ function App()
 
   function addColor()
   {
-    if(CURRENT_COLOR)
+      if(IS_ADDABLE)
+      {
+        //Copies the state into a new var in order to use the push function
+        var lista = colorArray.map(element => element );
+        lista.push( CURRENT_COLOR );
+        
+        //then sets the state
+        setColorArray(lista);
+
+        COLOR_INDEX = lista.length - 1; //Updates the COLOR_INDEX
+        IS_ADDABLE = false; //prevents addition
+        IS_DELETABLE = true; //enables deletion
+      }
+
+  }
+  
+  function deleteColor()
+  {
+    if(IS_DELETABLE)
     {
-      //Copies the state into a new var in order to use the push function
-      var lista = colorArray.map(element => element );
-      
-      lista.push( CURRENT_COLOR );
+      //Copies the state into a new filtered array without the deleted color
+      var lista = colorArray.filter((element, i) => {
+        return i !== COLOR_INDEX;
+      } );
       
       //then sets the state
       setColorArray(lista);
+      COLOR_INDEX = -1;
+      IS_ADDABLE = true; //Enables addition so it works like an "undo"
+
+
     }
   }
+
+
+
+
+
+
+function saveToLocalStorage()
+{
+  localStorage.setItem("ColorList", JSON.stringify(colorArray));
+  localStorage.setItem("CurrentColor", JSON.stringify(CURRENT_COLOR));
+}
+
+
+
+
 
 
 //----------------Component-----------------//
@@ -170,22 +223,17 @@ function App()
         style={{color: titleColor}}
         
         onMouseDown={()=> IS_KEPT = true} 
-        onMouseEnter={()=>setColors(null)}
+        onMouseEnter={()=>setColorsHandler(-1)}
         onMouseLeave={resetColors}
 
-        onTouchStart={()=>{
-          // IS_KEPT = true
-          setColors(null);
-          }
-        }  
-        // onTouchEnd={resetColors}
-        >
+        onTouchStart={()=>setColorsHandler(-1)}  
+        onTouchEnd={resetColors}>
           Psiloware
       </span> 
 
       <div>
         <div
-        className="not-selectable loop-icon-container hover-transform"
+        className="not-selectable icon-container hover-transform"
         
         onMouseDown={loopColors} 
         onMouseUp={stopLoop}
@@ -198,9 +246,22 @@ function App()
         </div>
 
         <div 
-        className="not-selectable loop-icon-container hover-transform"
+        className="not-selectable icon-container hover-transform"
         >
-          <SaveIcon iconColor={titleColor} onClick={addColor}/>
+          <AddIcon iconColor={titleColor} onClick={addColor}/>
+        </div>
+
+
+        <div 
+        className="not-selectable icon-container hover-transform"
+        >
+          <DeleteIcon iconColor={titleColor} onClick={deleteColor}/>
+        </div>
+
+        <div 
+        className="not-selectable icon-container hover-transform"
+        >
+          <SaveIcon iconColor={titleColor} onClick={saveToLocalStorage}/>
         </div>
 
 

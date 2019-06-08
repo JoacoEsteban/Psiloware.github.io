@@ -1,8 +1,7 @@
 {Todo}
-TODO Fix Mobile touch events for Title and Save Button
-TODO Integrate ColorList with localStorage
-TODO Add Remove Button
-TODO change Save button into ADD button and switch functionality
+TODO Fix Mobile touch events for Title and Buttons
+TODO Fix Styles
+TODO Add Animations
 
 {extras}
 TODO Dinamyc Favicon based on newcolors
